@@ -1,11 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+
+    alias(libs.plugins.compose.compiler) // ✅ Needed in Kotlin 2.0+
 
     alias(libs.plugins.ksp)
-    id("com.google.dagger.hilt.android")
-    id("dagger.hilt.android.plugin") // ✅ REQUIRED
+    alias(libs.plugins.hilt) // Using Hilt alias
 }
 
 android {
@@ -86,4 +86,9 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.gson)
+
+    //this one is deleted from libs.versions.toml
+    //kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+    // add plugin compose compile dependency
 }

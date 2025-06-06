@@ -5,12 +5,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddPhotoAlternate
-import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -27,6 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.ui.theme.Purple40
+import androidx.core.net.toUri
 
 /**
  * A composable function that displays a holiday image, either from a resource ID or a custom URI.
@@ -38,10 +37,10 @@ import com.dunyamin.fiestaapp.ui.theme.Purple40
  */
 @Composable
 fun HolidayImage(
+    modifier: Modifier = Modifier,
     imageRes: Int,
     customImageUri: String? = null,
-    contentDescription: String? = null,
-    modifier: Modifier = Modifier
+    contentDescription: String? = null
 ) {
     if (!customImageUri.isNullOrEmpty()) {
         // Display custom image from URI
@@ -49,7 +48,8 @@ fun HolidayImage(
         val context = LocalContext.current
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(Uri.parse(customImageUri))
+                .data(customImageUri.toUri())
+                //.data(Uri.parse(customImageUri))
                 .crossfade(true)
                 .build(),
             contentDescription = contentDescription,

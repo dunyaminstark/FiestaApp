@@ -21,17 +21,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -55,21 +53,15 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.data.Holiday
 import com.dunyamin.fiestaapp.ui.theme.Purple40
-import com.dunyamin.fiestaapp.ui.components.ImagePickerButton
-import com.dunyamin.fiestaapp.ui.components.HolidayImage
 import com.dunyamin.fiestaapp.util.rememberImageStorageManager
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -368,7 +360,7 @@ fun EditHolidayDialog(
                                         }
                                     }
 
-                                    customImageUri = null  // Clear custom image when selecting a predefined one
+                                    customImageUri = null  // Clear a custom image when selecting a predefined one
                                 }
                         ) {
                             Image(
@@ -381,7 +373,7 @@ fun EditHolidayDialog(
                     }
                 }
 
-                // Option to select image from gallery
+                // Option to select an image from a gallery
                 Text(
                     text = "Or select from your device:",
                     fontSize = 14.sp,

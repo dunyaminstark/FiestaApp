@@ -3,16 +3,31 @@ package com.dunyamin.fiestaapp.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.PersonAdd
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,9 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.dunyamin.fiestaapp.R
+import com.dunyamin.fiestaapp.ui.theme.Pink40
 import com.dunyamin.fiestaapp.ui.theme.Purple40
 import com.dunyamin.fiestaapp.ui.theme.PurpleGrey40
-import com.dunyamin.fiestaapp.ui.theme.Pink40
 
 @Composable
 fun ProfileDrawerContent(
@@ -172,7 +187,7 @@ fun SettingsDialog(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                // Update Info Button - Elevated Button with Icon
+                // Update Info Button – Elevated Button with Icon
                 ElevatedButton(
                     onClick = onUpdateInfoClick,
                     modifier = Modifier
@@ -213,7 +228,7 @@ fun SettingsDialog(
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                 )
 
-                // Login Button - Elevated Button with Icon
+                // Login Button – Elevated Button with Icon
                 ElevatedButton(
                     onClick = onLoginClick,
                     modifier = Modifier
@@ -233,7 +248,7 @@ fun SettingsDialog(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Login,
+                            imageVector = Icons.AutoMirrored.Filled.Login,
                             contentDescription = "Login",
                             tint = PurpleGrey40
                         )
@@ -245,7 +260,7 @@ fun SettingsDialog(
                     }
                 }
 
-                // Signup Button - Elevated Button with Icon
+                // Signup Button – Elevated Button with Icon
                 ElevatedButton(
                     onClick = onSignupClick,
                     modifier = Modifier

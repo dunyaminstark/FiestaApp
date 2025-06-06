@@ -18,14 +18,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.data.Flag
-import com.dunyamin.fiestaapp.data.repository.CountryRepositoryProvider
 
 @Composable
 fun TopBar(
-    onLogoClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onLogoClick: () -> Unit = {}
 ) {
-    // Initialize with a default flag
     val initialFlag = remember { Flag("tr", "Turkey", R.drawable.tr) }
     var selectedFlag by remember { mutableStateOf<Flag>(initialFlag) }
 
@@ -44,8 +42,6 @@ fun TopBar(
                 .padding(4.dp) // Added padding for better visual appearance
                 .clickable { onLogoClick() }
         )
-
-        // Use the updated FlagSelector that fetches flags from the API
         FlagSelector(
             initialFlag = selectedFlag,
             onFlagSelected = { flag ->

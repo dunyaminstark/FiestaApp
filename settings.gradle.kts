@@ -1,14 +1,15 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal() // Moved up
-        mavenCentral()     // Moved up
+        gradlePluginPortal()
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
                 includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
+                includeGroupByRegex("com\\.google\\.devtools\\.ksp.*") // Added KSP group
             }
         }
+        mavenCentral()
     }
 }
 dependencyResolutionManagement {

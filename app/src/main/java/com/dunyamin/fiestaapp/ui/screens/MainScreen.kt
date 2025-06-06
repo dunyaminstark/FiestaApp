@@ -3,12 +3,8 @@ package com.dunyamin.fiestaapp.ui.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Alignment
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -24,19 +20,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.data.Holiday
-import com.dunyamin.fiestaapp.data.repository.HolidayRepository
 import com.dunyamin.fiestaapp.data.repository.HolidayRepositoryProvider
 import com.dunyamin.fiestaapp.ui.components.EditHolidayDialog
 import com.dunyamin.fiestaapp.ui.components.HolidaySwiper
 import com.dunyamin.fiestaapp.ui.components.ProfileDrawerContent
 import com.dunyamin.fiestaapp.ui.components.TopBar
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.Year
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -74,7 +69,7 @@ fun MainScreen(
 
     // Effect to load holidays when the component is first composed
     // and reload them when the app is restarted
-    DisposableEffect(Unit) {  // Using Unit as key ensures this runs on every composition
+    DisposableEffect(Unit) {  // Using Unit as a key ensures this runs on every composition
         println("[DEBUG_LOG] Loading holidays in DisposableEffect")
         loadHolidays()
         onDispose { }
@@ -103,7 +98,7 @@ fun MainScreen(
                     .fillMaxSize()  // Take up the entire screen
                     .padding(innerPadding) // Apply Scaffold's padding
                     .background(Color(0xFFF0F0F0))
-                    .padding(0.dp)  // Remove padding for true fullscreen effect
+                    .padding(0.dp)  // Remove padding for a true fullscreen effect
             ) {
                 // HolidaySwiper fills the entire screen
                 HolidaySwiper(
