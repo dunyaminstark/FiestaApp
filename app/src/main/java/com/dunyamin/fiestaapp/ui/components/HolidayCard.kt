@@ -53,9 +53,9 @@ fun HolidayCard(
     }
 
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(0.dp), // Remove rounded corners for full-screen effect
         modifier = Modifier
-            .padding(16.dp)
+            .padding(0.dp) // Remove padding for true fullscreen
             .fillMaxSize(),  // Fill the entire available space
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
@@ -77,41 +77,41 @@ fun HolidayCard(
                     .padding(bottom = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Holiday name with a semi-transparent background - now clickable
+                // Holiday name with a more opaque background for better readability - now clickable
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                        .shadow(4.dp, RoundedCornerShape(4.dp))
-                        .background(Color.White.copy(alpha = 0.7f), RoundedCornerShape(4.dp))
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .shadow(6.dp, RoundedCornerShape(8.dp))
+                        .background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(8.dp))
                         .clickable { onEditHoliday(holiday) }  // Make the box clickable to edit holiday
                 ) {
                     Text(
                         text = holiday.name,
-                        fontSize = 26.sp,
+                        fontSize = 30.sp, // Increased font size for better readability
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .padding(horizontal = 20.dp, vertical = 12.dp) // Increased padding for better touch target
                     )
                 }
 
-                // Holiday date with a semi-transparent background – now clickable
+                // Holiday date with a more opaque background for better readability – now clickable
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                        .shadow(4.dp, RoundedCornerShape(4.dp))
-                        .background(Color.White.copy(alpha = 0.7f), RoundedCornerShape(4.dp))
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .shadow(6.dp, RoundedCornerShape(8.dp))
+                        .background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(8.dp))
                         .clickable { showDatePicker = true }  // Make the box clickable
                 ) {
                     Text(
                         text = displayDate,
-                        fontSize = 20.sp,
-                        color = Color.DarkGray,
+                        fontSize = 24.sp, // Increased font size for better readability
+                        color = Color.Black, // Darker color for better contrast
                         fontWeight = FontWeight.Medium,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .padding(horizontal = 20.dp, vertical = 12.dp) // Increased padding for better touch target
                     )
                 }
             }

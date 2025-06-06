@@ -16,15 +16,15 @@ import com.dunyamin.fiestaapp.data.Holiday
 @Composable
 fun HolidaySwiper(
     holidays: List<Holiday>,
-    onEditHoliday: (Holiday) -> Unit = {}
+    onEditHoliday: (Holiday) -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { holidays.size })
 
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier
-            .fillMaxSize()
-            .fillMaxHeight(0.9f)  // Take up 90% of available height for fullscreen effect
+        modifier = modifier
+            .fillMaxHeight(1f)  // Take up 100% of available height for true fullscreen effect
     ) { page ->
         HolidayCard(
             holiday = holidays[page],

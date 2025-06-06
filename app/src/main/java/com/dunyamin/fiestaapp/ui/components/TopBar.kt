@@ -17,13 +17,16 @@ import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.data.Flag
 
 @Composable
-fun TopBar(onLogoClick: () -> Unit = {}) {
+fun TopBar(
+    onLogoClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     val initialFlag = remember { Flag("tr", "Turkey", R.drawable.tr) }
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(top = 50.dp),
+            .padding(top = 16.dp, start = 8.dp, end = 8.dp), // Reduced top padding, added horizontal padding
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -31,7 +34,8 @@ fun TopBar(onLogoClick: () -> Unit = {}) {
             painter = painterResource(id = R.drawable.logo), // your logo here
             contentDescription = "Logo",
             modifier = Modifier
-                .size(40.dp)
+                .size(48.dp) // Increased size for better visibility and touch target
+                .padding(4.dp) // Added padding for better visual appearance
                 .clickable { onLogoClick() }
         )
         FlagSelector(
