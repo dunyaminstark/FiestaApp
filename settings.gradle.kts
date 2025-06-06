@@ -1,5 +1,7 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal() // Moved up
+        mavenCentral()     // Moved up
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -7,8 +9,6 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
-        mavenCentral()
-        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "FiestaApp"
 include(":app")
- 

@@ -3,16 +3,16 @@ agp = "8.10.1"
 coilCompose = "2.7.0"
 foundation = "1.8.2"
 hiltAndroidCompiler = "2.56.2"
-kotlin = "2.1.21"
-coreKtx = "1.16.0"
+kotlin = "1.9.21"
+coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.05.01"
+composeBom = "2023.10.01"
 
-ksp = "2.0.21-1.0.27"
+ksp = "1.9.21-1.0.15"
 hilt = "2.56.2"
 materialIconsExtended = "1.7.8"
 navigation = " 2.9.0"
@@ -21,6 +21,11 @@ navigationRuntimeAndroid = "2.9.0"
 hilt_navigation_compose = "1.2.0"
 roomCommonJvm = "2.7.1"
 roomRuntimeAndroid = "2.7.1"
+
+# Network dependencies
+retrofit = "2.9.0"
+okhttp = "4.12.0"
+gson = "2.10.1"
 
 [libraries]
 
@@ -52,6 +57,13 @@ androidx-navigation-runtime-android = { group = "androidx.navigation", name = "n
 androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
 androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 
+# Network libraries
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -60,4 +72,3 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-

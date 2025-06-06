@@ -45,6 +45,7 @@ fun HolidayImage(
 ) {
     if (!customImageUri.isNullOrEmpty()) {
         // Display custom image from URI
+        println("[DEBUG_LOG] Loading custom image from URI: $customImageUri")
         val context = LocalContext.current
         AsyncImage(
             model = ImageRequest.Builder(context)
@@ -54,10 +55,14 @@ fun HolidayImage(
             contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
             modifier = modifier,
-            error = painterResource(id = R.drawable.card_image) // Fallback image if loading fails
+            error = painterResource(id = R.drawable.card_image), // Fallback image if loading fails
+            onError = {
+                println("[DEBUG_LOG] Error loading custom image from URI: $customImageUri")
+            }
         )
     } else {
         // Display image from resource ID
+        println("[DEBUG_LOG] Loading image from resource ID: $imageRes")
         Image(
             painter = painterResource(id = imageRes),
             contentDescription = contentDescription,
@@ -82,7 +87,12 @@ fun ImagePickerButton(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         // If an image was selected (uri is not null), call the callback function
-        uri?.let { onImageSelected(it) }
+        if (uri != null) {
+            println("[DEBUG_LOG] Image selected from picker: $uri")
+            onImageSelected(uri)
+        } else {
+            println("[DEBUG_LOG] No image selected from picker")
+        }
     }
 
     Box(

@@ -71,7 +71,7 @@ dependencies {
 
     implementation(libs.hilt.core)
     // hilt compiler dependency
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.activity.compose)
@@ -80,4 +80,10 @@ dependencies {
     // Coil for image loading
     implementation(libs.coil.compose)
 
+    // Network dependencies
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.gson)
 }

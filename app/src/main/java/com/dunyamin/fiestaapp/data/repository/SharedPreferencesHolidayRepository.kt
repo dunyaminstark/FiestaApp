@@ -31,6 +31,10 @@ class SharedPreferencesHolidayRepository(
         val imageRes = holidayPreferences.getHolidayImageRes(formattedDate, defaultImageRes)
         val customImageUri = holidayPreferences.getCustomHolidayImage(formattedDate)
 
+        if (customImageUri != null) {
+            println("[DEBUG_LOG] Retrieved custom image URI for date $formattedDate: $customImageUri")
+        }
+
         return Holiday(
             name = name,
             date = formattedDate,
@@ -60,7 +64,7 @@ class SharedPreferencesHolidayRepository(
             val date = startDate.plusDays(dayOffset.toLong())
             val nameIndex = dayOffset % defaultNames.size
             val imageIndex = dayOffset % defaultImageResIds.size
-            
+
             getHoliday(
                 date = date,
                 defaultName = defaultNames[nameIndex],
@@ -75,13 +79,20 @@ class SharedPreferencesHolidayRepository(
      * @param holiday The Holiday object to save
      */
     override fun saveHoliday(holiday: Holiday) {
+        println("[DEBUG_LOG] Saving holiday: ${holiday.name}, ${holiday.date}, ${holiday.imageRes}, ${holiday.customImageUri}")
+
         holidayPreferences.saveHolidayName(holiday.date, holiday.name)
         holidayPreferences.saveHolidayImageRes(holiday.date, holiday.imageRes)
-        
+
         if (holiday.hasCustomImage()) {
             holiday.customImageUri?.let { uri ->
+                println("[DEBUG_LOG] Saving custom image URI for date ${holiday.date}: $uri")
                 holidayPreferences.saveCustomHolidayImage(holiday.date, uri)
             }
+        } else {
+            // If the holiday doesn't have a custom image, remove any existing custom image URI
+            println("[DEBUG_LOG] Removing custom image URI for date ${holiday.date}")
+            holidayPreferences.removeCustomHolidayImage(holiday.date)
         }
     }
 

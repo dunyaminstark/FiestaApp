@@ -109,7 +109,28 @@ class HolidayPreferences(private val context: Context) {
      * @param imageUri The URI of the custom image
      */
     fun saveCustomHolidayImage(date: String, imageUri: String) {
-        sharedPreferences.edit { putString("$CUSTOM_IMAGE_KEY_PREFIX$date", imageUri) }
+        println("[DEBUG_LOG] HolidayPreferences: Saving custom image URI for date $date: $imageUri")
+        val key = "$CUSTOM_IMAGE_KEY_PREFIX$date"
+        sharedPreferences.edit { putString(key, imageUri) }
+
+        // Verify the save operation
+        val savedUri = sharedPreferences.getString(key, null)
+        println("[DEBUG_LOG] HolidayPreferences: Verified saved URI: $savedUri")
+    }
+
+    /**
+     * Remove a custom image URI for a specific date.
+     * 
+     * @param date The date of the holiday in string format
+     */
+    fun removeCustomHolidayImage(date: String) {
+        println("[DEBUG_LOG] HolidayPreferences: Removing custom image URI for date $date")
+        val key = "$CUSTOM_IMAGE_KEY_PREFIX$date"
+        sharedPreferences.edit { remove(key) }
+
+        // Verify the remove operation
+        val removedUri = sharedPreferences.getString(key, null)
+        println("[DEBUG_LOG] HolidayPreferences: Verified after removal, URI is null: ${removedUri == null}")
     }
 
     /**
@@ -119,7 +140,10 @@ class HolidayPreferences(private val context: Context) {
      * @return The saved URI or null if no custom image has been saved
      */
     fun getCustomHolidayImage(date: String): String? {
-        return sharedPreferences.getString("$CUSTOM_IMAGE_KEY_PREFIX$date", null)
+        val key = "$CUSTOM_IMAGE_KEY_PREFIX$date"
+        val uri = sharedPreferences.getString(key, null)
+        println("[DEBUG_LOG] HolidayPreferences: Getting custom image URI for date $date: $uri")
+        return uri
     }
 
     /**

@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Image
@@ -63,6 +64,13 @@ import com.dunyamin.fiestaapp.data.Holiday
 import com.dunyamin.fiestaapp.ui.theme.Purple40
 import com.dunyamin.fiestaapp.ui.components.ImagePickerButton
 import com.dunyamin.fiestaapp.ui.components.HolidayImage
+import com.dunyamin.fiestaapp.util.rememberImageStorageManager
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,9 +80,17 @@ fun EditHolidayDialog(
     onSave: (Holiday) -> Unit
 ) {
     var holidayName by remember { mutableStateOf(holiday.name) }
+    var holidayDate by remember { mutableStateOf(holiday.date) }
     var isError by remember { mutableStateOf(false) }
+    var showDatePicker by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+
+    // Format for displaying the date
+    val dateFormatter = DateTimeFormatter.ofPattern("d MMMM")
+
+    // Get the ImageStorageManager instance
+    val imageStorageManager = rememberImageStorageManager()
 
     // Available holiday images
     val holidayImages = listOf(
@@ -89,23 +105,66 @@ fun EditHolidayDialog(
     // State to track the custom image URI
     var customImageUri by remember { mutableStateOf(holiday.customImageUri) }
 
+    // State to track the original custom image URI (for cleanup)
+    val originalCustomImageUri = remember { holiday.customImageUri }
+
+    // Log the initial custom image URI
+    println("[DEBUG_LOG] Initial custom image URI in EditHolidayDialog: $customImageUri")
+
     // Validate input and handle save action
     fun validateAndSave() {
         if (holidayName.trim().isEmpty()) {
             isError = true
         } else {
-            // Create a new Holiday with the updated name and image
+            println("[DEBUG_LOG] Saving holiday with custom image URI: $customImageUri")
+
+            // If the original image is different from the current one and is an internal storage URI, delete it
+            if (originalCustomImageUri != customImageUri && !originalCustomImageUri.isNullOrEmpty()) {
+                try {
+                    val originalUri = Uri.parse(originalCustomImageUri)
+                    if (imageStorageManager.isInternalStorageUri(originalUri)) {
+                        val deleted = imageStorageManager.deleteImageFromInternalStorage(originalUri)
+                        println("[DEBUG_LOG] Original image deleted on save: $deleted")
+                    }
+                } catch (e: Exception) {
+                    println("[DEBUG_LOG] Error deleting original image: ${e.message}")
+                }
+            }
+
+            // Create a new Holiday with the updated name, date, and image
             val updatedHoliday = Holiday(
                 name = holidayName.trim(),
-                date = holiday.date,
+                date = holidayDate,
                 imageRes = selectedImageRes,
                 customImageUri = customImageUri
             )
+
+            println("[DEBUG_LOG] Created updated holiday: ${updatedHoliday.name}, ${updatedHoliday.date}, ${updatedHoliday.imageRes}, ${updatedHoliday.customImageUri}")
+
             onSave(updatedHoliday)
         }
     }
 
-    Dialog(onDismissRequest = onDismiss) {
+    // Function to clean up any new images that were added but not saved
+    fun cleanupUnsavedImages() {
+        // If the current custom image URI is different from the original and is an internal storage URI
+        if (customImageUri != originalCustomImageUri && !customImageUri.isNullOrEmpty()) {
+            try {
+                val currentUri = Uri.parse(customImageUri)
+                if (imageStorageManager.isInternalStorageUri(currentUri)) {
+                    val deleted = imageStorageManager.deleteImageFromInternalStorage(currentUri)
+                    println("[DEBUG_LOG] Unsaved image deleted on dismiss: $deleted")
+                }
+            } catch (e: Exception) {
+                println("[DEBUG_LOG] Error deleting unsaved image: ${e.message}")
+            }
+        }
+
+        // Call the original onDismiss callback
+        onDismiss()
+    }
+
+    Dialog(onDismissRequest = { cleanupUnsavedImages() }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -181,6 +240,30 @@ fun EditHolidayDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Holiday date field with icon
+                OutlinedTextField(
+                    value = holidayDate,
+                    onValueChange = { /* Read-only field, handled by date picker */ },
+                    label = { Text("Holiday Date") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.CalendarMonth,
+                            contentDescription = "Edit Holiday Date",
+                            tint = Purple40
+                        )
+                    },
+                    readOnly = true,
+                    supportingText = {
+                        Text("Click to select a date for your holiday")
+                    },
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showDatePicker = true }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -271,6 +354,20 @@ fun EditHolidayDialog(
                                 )
                                 .clickable { 
                                     selectedImageRes = imageRes
+
+                                    // Delete the custom image if it exists and is an internal storage URI
+                                    if (!customImageUri.isNullOrEmpty()) {
+                                        try {
+                                            val oldUri = Uri.parse(customImageUri)
+                                            if (imageStorageManager.isInternalStorageUri(oldUri)) {
+                                                val deleted = imageStorageManager.deleteImageFromInternalStorage(oldUri)
+                                                println("[DEBUG_LOG] Custom image deleted when selecting predefined image: $deleted")
+                                            }
+                                        } catch (e: Exception) {
+                                            println("[DEBUG_LOG] Error deleting custom image: ${e.message}")
+                                        }
+                                    }
+
                                     customImageUri = null  // Clear custom image when selecting a predefined one
                                 }
                         ) {
@@ -298,7 +395,33 @@ fun EditHolidayDialog(
                 // Image picker button
                 ImagePickerButton(
                     onImageSelected = { uri ->
-                        customImageUri = uri.toString()
+                        println("[DEBUG_LOG] Image selected in EditHolidayDialog: $uri")
+
+                        // Save the image to internal storage
+                        val internalUri = imageStorageManager.saveImageToInternalStorage(uri)
+
+                        if (internalUri != null) {
+                            println("[DEBUG_LOG] Image saved to internal storage: $internalUri")
+
+                            // Delete the old custom image if it exists and is an internal storage URI
+                            if (!customImageUri.isNullOrEmpty()) {
+                                try {
+                                    val oldUri = Uri.parse(customImageUri)
+                                    if (imageStorageManager.isInternalStorageUri(oldUri)) {
+                                        val deleted = imageStorageManager.deleteImageFromInternalStorage(oldUri)
+                                        println("[DEBUG_LOG] Old image deleted: $deleted")
+                                    }
+                                } catch (e: Exception) {
+                                    println("[DEBUG_LOG] Error deleting old image: ${e.message}")
+                                }
+                            }
+
+                            // Update the custom image URI
+                            customImageUri = internalUri.toString()
+                            println("[DEBUG_LOG] Updated customImageUri: $customImageUri")
+                        } else {
+                            println("[DEBUG_LOG] Failed to save image to internal storage")
+                        }
                     }
                 )
 
@@ -309,7 +432,7 @@ fun EditHolidayDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextButton(onClick = onDismiss) {
+                    TextButton(onClick = { cleanupUnsavedImages() }) {
                         Text("Cancel")
                     }
 
@@ -347,5 +470,25 @@ fun EditHolidayDialog(
     // Request focus on the text field when the dialog is shown
     androidx.compose.runtime.LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+
+    // Show the date picker dialog when requested
+    if (showDatePicker) {
+        ShowDatePickerDialog(
+            onDateSelected = { date ->
+                // Format the selected date to match the repository's format
+                val calendar = Calendar.getInstance()
+                calendar.time = date
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+
+                // Update the holiday date
+                holidayDate = "$day $month"
+                showDatePicker = false
+            },
+            onDismiss = {
+                showDatePicker = false
+            }
+        )
     }
 }

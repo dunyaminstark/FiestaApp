@@ -3,8 +3,6 @@ package com.dunyamin.fiestaapp.ui.components
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -17,6 +15,7 @@ import com.dunyamin.fiestaapp.data.Holiday
 fun HolidaySwiper(
     holidays: List<Holiday>,
     onEditHoliday: (Holiday) -> Unit = {},
+    onUpdateHoliday: (Holiday) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { holidays.size })
@@ -28,7 +27,8 @@ fun HolidaySwiper(
     ) { page ->
         HolidayCard(
             holiday = holidays[page],
-            onEditHoliday = onEditHoliday
+            onEditHoliday = onEditHoliday,
+            onUpdateHoliday = onUpdateHoliday
         )
     }
 }

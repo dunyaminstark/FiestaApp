@@ -28,29 +28,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dunyamin.fiestaapp.data.Holiday
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import com.dunyamin.fiestaapp.ui.components.HolidayImage
 
 @Composable
 fun HolidayCard(
     holiday: Holiday,
-    onEditHoliday: (Holiday) -> Unit = {}
+    onEditHoliday: (Holiday) -> Unit = {},
+    onUpdateHoliday: (Holiday) -> Unit = {}
 ) {
     // State to track if the date picker should be shown
     var showDatePicker by remember { mutableStateOf(false) }
-    // State to store the selected date
-    var selectedDate by remember { mutableStateOf<Date?>(null) }
 
     // Format for displaying the date
     val dateFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
 
-    // Determine the text to display for the date
-    val displayDate = if (selectedDate != null) {
-        dateFormat.format(selectedDate!!)
-    } else {
-        holiday.date
-    }
+    // Use the holiday date directly for display
+    val displayDate = holiday.date
 
     Card(
         shape = RoundedCornerShape(0.dp), // Remove rounded corners for full-screen effect
@@ -122,7 +117,22 @@ fun HolidayCard(
     if (showDatePicker) {
         ShowDatePickerDialog(
             onDateSelected = { date ->
-                selectedDate = date
+                // Format the selected date to match the repository's format
+                val calendar = Calendar.getInstance()
+                calendar.time = date
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+
+                // Create a new Holiday with the updated date
+                val updatedHoliday = Holiday(
+                    name = holiday.name,
+                    date = "$day $month",
+                    imageRes = holiday.imageRes,
+                    customImageUri = holiday.customImageUri
+                )
+
+                // Call the callback to update the holiday
+                onUpdateHoliday(updatedHoliday)
                 showDatePicker = false
             },
             onDismiss = {

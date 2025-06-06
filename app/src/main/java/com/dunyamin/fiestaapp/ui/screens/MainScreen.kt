@@ -18,6 +18,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,15 +60,24 @@ fun MainScreen(
     // Get the current year
     val currentYear = Year.now().value
 
-    // Get holidays for the current year using the repository
-    var holidays by remember { 
-        mutableStateOf(
-            holidayRepository.getHolidaysForYear(
-                year = currentYear,
-                defaultNames = holidayNames,
-                defaultImageResIds = holidayImages
-            )
-        ) 
+    // State to hold the holidays
+    var holidays by remember { mutableStateOf<List<Holiday>>(emptyList()) }
+
+    // Load holidays from the repository
+    fun loadHolidays() {
+        holidays = holidayRepository.getHolidaysForYear(
+            year = currentYear,
+            defaultNames = holidayNames,
+            defaultImageResIds = holidayImages
+        )
+    }
+
+    // Effect to load holidays when the component is first composed
+    // and reload them when the app is restarted
+    DisposableEffect(Unit) {  // Using Unit as key ensures this runs on every composition
+        println("[DEBUG_LOG] Loading holidays in DisposableEffect")
+        loadHolidays()
+        onDispose { }
     }
 
     // State to track the currently selected holiday for editing
@@ -101,6 +111,21 @@ fun MainScreen(
                     onEditHoliday = { holiday ->
                         holidayToEdit = holiday
                     },
+                    onUpdateHoliday = { updatedHoliday ->
+                        // Save the updated holiday using the repository
+                        holidayRepository.saveHoliday(updatedHoliday)
+
+                        // Reload holidays from the repository to ensure we have the latest data
+                        loadHolidays()
+
+                        // Show Snackbar
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "Holiday date updated successfully!",
+                                duration = SnackbarDuration.Short
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxSize()
                 )
 
@@ -126,14 +151,8 @@ fun MainScreen(
                 // Save the updated holiday using the repository
                 holidayRepository.saveHoliday(updatedHoliday)
 
-                // Update the holiday in the list
-                holidays = holidays.map { h ->
-                    if (h.date == updatedHoliday.date) {
-                        updatedHoliday
-                    } else {
-                        h
-                    }
-                }
+                // Reload holidays from the repository to ensure we have the latest data
+                loadHolidays()
 
                 // Close the dialog
                 holidayToEdit = null
