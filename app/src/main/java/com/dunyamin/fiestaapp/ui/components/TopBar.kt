@@ -24,13 +24,13 @@ fun TopBar(
     modifier: Modifier = Modifier,
     onLogoClick: () -> Unit = {}
 ) {
-    val initialFlag = remember { Flag("tr", "Turkey", R.drawable.tr) }
+    val initialFlag = remember { Flag("tr", "Turkey", "https://flagcdn.com/w320/tr.png") }
     var selectedFlag by remember { mutableStateOf<Flag>(initialFlag) }
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 16.dp, start = 8.dp, end = 8.dp), // Reduced top padding, added horizontal padding
+            .padding(top = 48.dp, start = 16.dp, end = 20.dp), // Reduced top padding, added horizontal padding
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

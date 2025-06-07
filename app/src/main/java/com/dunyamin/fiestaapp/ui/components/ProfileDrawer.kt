@@ -29,6 +29,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,18 +44,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.ui.theme.Pink40
 import com.dunyamin.fiestaapp.ui.theme.Purple40
 import com.dunyamin.fiestaapp.ui.theme.PurpleGrey40
+import com.dunyamin.fiestaapp.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileDrawerContent(
     onUpdateInfoClick: () -> Unit = {},
     onLoginClick: () -> Unit = {},
-    onSignupClick: () -> Unit = {}
+    onSignupClick: () -> Unit = {},
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     var showSettingsDialog by remember { mutableStateOf(false) }
+    val name by profileViewModel.name.collectAsState()
+    val bio by profileViewModel.bio.collectAsState()
 
     Column(
         modifier = Modifier
@@ -78,19 +84,19 @@ fun ProfileDrawerContent(
 
         // Username
         Text(
-            text = "John Doe",
+            text = name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Gray,
+            color = Purple40, // Changed from Color.Gray
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         // User Bio
         Text(
-            text = "Android Developer | Holiday Enthusiast",
+            text = bio,
             fontSize = 15.sp,
-            color = Color.Gray,
+            color = PurpleGrey40, // Changed from Color.Gray
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
@@ -109,13 +115,13 @@ fun ProfileDrawerContent(
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Settings",
-                tint = Color.Gray
+                tint = Purple40 // Changed from Color.Gray
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = "Settings",
                 fontSize = 18.sp,
-                color = Color.Gray
+                color = Purple40 // Changed from Color.Gray
             )
         }
 
@@ -183,7 +189,7 @@ fun SettingsDialog(
                     text = "Account",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.Gray,
+                    color = PurpleGrey40, // Changed from Color.Gray
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
@@ -224,7 +230,7 @@ fun SettingsDialog(
                     text = "Authentication",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.Gray,
+                    color = PurpleGrey40, // Changed from Color.Gray
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                 )
 

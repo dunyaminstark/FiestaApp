@@ -9,6 +9,8 @@
     <!-- Permission to read images (for Android 10 and later) -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".FiestaApplication"
         android:allowBackup="true"

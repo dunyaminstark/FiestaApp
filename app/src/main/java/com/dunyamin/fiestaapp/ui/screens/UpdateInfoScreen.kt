@@ -62,7 +62,10 @@ import com.dunyamin.fiestaapp.ui.theme.Pink40
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateInfoScreen(onBackClick: () -> Unit = {}) {
+fun UpdateInfoScreen(
+    onBackClick: () -> Unit = {},
+    onSaveInfo: (name: String, bio: String) -> Unit = { _, _ -> } // Added onSaveInfo lambda
+) {
     var name by remember { mutableStateOf("John Doe") }
     var bio by remember { mutableStateOf("Android Developer | Holiday Enthusiast") }
 
@@ -202,7 +205,11 @@ fun UpdateInfoScreen(onBackClick: () -> Unit = {}) {
 
             // Save button with icon
             ElevatedButton(
-                onClick = { /* TODO: Save profile changes and navigate back */ },
+                onClick = { 
+                    onSaveInfo(name, bio) // Call onSaveInfo with current name and bio
+                    // Optionally, you might want to call onBackClick here too after saving
+                    // onBackClick() 
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.elevatedButtonColors(
                     containerColor = Purple40,
@@ -235,11 +242,13 @@ fun UpdateInfoScreen(onBackClick: () -> Unit = {}) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateInfoDialog(
+    initialName: String,
+    initialBio: String,
     onDismiss: () -> Unit,
     onSave: (name: String, bio: String) -> Unit = { _, _ -> }
 ) {
-    var name by remember { mutableStateOf("John Doe") }
-    var bio by remember { mutableStateOf("Android Developer | Holiday Enthusiast") }
+    var name by remember { mutableStateOf(initialName) }
+    var bio by remember { mutableStateOf(initialBio) }
 
     Dialog(onDismissRequest = onDismiss) {
         Card(
