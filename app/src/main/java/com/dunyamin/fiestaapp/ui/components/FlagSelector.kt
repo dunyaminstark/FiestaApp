@@ -1,6 +1,5 @@
 package com.dunyamin.fiestaapp.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -76,7 +75,7 @@ fun FlagSelector(
         flags = countryCodes.map { (code, name) ->
             Flag(code, name, "https://flagcdn.com/w320/$code.png")
         }
-        // Update selectedFlag if initialFlag's code is in the new list, or set a default
+        // Update selectedFlag if initialFlag's code is in the new list or set a default
         val currentInitialFlag = flags.find { it.countryCode == initialFlag.countryCode }
         if (currentInitialFlag != null) {
             selectedFlag = currentInitialFlag
@@ -98,7 +97,7 @@ fun FlagSelector(
         modifier = modifier
             .size(40.dp)
             .clickable {
-                if (flags.isNotEmpty()) { // Only show dialog if flags are loaded
+                if (flags.isNotEmpty()) { // Only show a dialog if flags are loaded
                     showDialog = true
                 }
             }

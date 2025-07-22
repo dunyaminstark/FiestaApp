@@ -33,13 +33,18 @@ import com.dunyamin.fiestaapp.ui.components.ProfileDrawerContent
 import com.dunyamin.fiestaapp.ui.components.TopBar
 import kotlinx.coroutines.launch
 import java.time.Year
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.HowToVote
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     onUpdateInfoClick: () -> Unit = {},
     onLoginClick: () -> Unit = {},
-    onSignupClick: () -> Unit = {}
+    onSignupClick: () -> Unit = {},
+    onVoteClick: () -> Unit = {}
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -133,6 +138,16 @@ fun MainScreen(
                     },
                     modifier = Modifier.align(Alignment.TopCenter)
                 )
+
+                FloatingActionButton(
+                    onClick = { onVoteClick() },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(Icons.Default.HowToVote, contentDescription = "Vote for Holiday Name")
+                }
+
             }
         }
     }

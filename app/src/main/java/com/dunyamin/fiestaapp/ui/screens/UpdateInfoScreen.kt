@@ -18,12 +18,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,14 +30,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +53,6 @@ import androidx.compose.ui.window.Dialog
 import com.dunyamin.fiestaapp.R
 import com.dunyamin.fiestaapp.ui.theme.Purple40
 import com.dunyamin.fiestaapp.ui.theme.PurpleGrey40
-import com.dunyamin.fiestaapp.ui.theme.Pink40
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -206,7 +200,7 @@ fun UpdateInfoScreen(
             // Save button with icon
             ElevatedButton(
                 onClick = { 
-                    onSaveInfo(name, bio) // Call onSaveInfo with current name and bio
+                    onSaveInfo(name, bio) // Call onSaveInfo with a current name and bio
                     // Optionally, you might want to call onBackClick here too after saving
                     // onBackClick() 
                 },

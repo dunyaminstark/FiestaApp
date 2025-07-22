@@ -15,6 +15,7 @@ import com.dunyamin.fiestaapp.ui.screens.LoginDialog
 import com.dunyamin.fiestaapp.ui.screens.MainScreen
 import com.dunyamin.fiestaapp.ui.screens.SignupDialog
 import com.dunyamin.fiestaapp.ui.screens.UpdateInfoDialog
+import com.dunyamin.fiestaapp.ui.screens.VotingScreen
 import com.dunyamin.fiestaapp.viewmodel.ProfileViewModel
 
 // Define navigation routes
@@ -45,7 +46,10 @@ fun AppNavigation(
             MainScreen(
                 onUpdateInfoClick = { showUpdateInfoDialog = true },
                 onLoginClick = { showLoginDialog = true },
-                onSignupClick = { showSignupDialog = true }
+                onSignupClick = { showSignupDialog = true },
+                onVoteClick = {
+                    navController.navigate("voting_screen/20 April")
+                }
             )
 
             // Show dialogs when needed
@@ -71,7 +75,7 @@ fun AppNavigation(
 
             if (showUpdateInfoDialog) {
                 UpdateInfoDialog(
-                    initialName = currentName, // Pass current name
+                    initialName = currentName, // Pass the current name
                     initialBio = currentBio,   // Pass current bio
                     onDismiss = { showUpdateInfoDialog = false },
                     onSave = { name, bio ->
@@ -81,5 +85,12 @@ fun AppNavigation(
                 )
             }
         }
+
+        composable("voting_screen/{date}") { backStackEntry ->
+            val date = backStackEntry.arguments?.getString("date") ?: "Unknown Date"
+            VotingScreen(date = date)
+        }
+
+
     }
 }
